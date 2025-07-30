@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Pack Converter - Indigo Tools</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com/converter">
+    <meta property="og:title" content="Minecraft Pack Converter - Indigo Tools">
+    <meta property="og:description" content="Convert your Minecraft resource packs between Java and Bedrock editions with ease, powered by Indigo Tools.">
+    <meta property="og:image" content="https://placehold.co/1200x630/52489C/ffffff?text=Indigo+Tools+Converter">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yourwebsite.com/converter">
+    <meta property="twitter:title" content="Minecraft Pack Converter - Indigo Tools">
+    <meta property="twitter:description" content="Convert your Minecraft resource packs between Java and Bedrock editions with ease, powered by Indigo Tools.">
+    <meta property="twitter:image" content="https://placehold.co/1200x630/52489C/ffffff?text=Indigo+Tools+Converter">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col">
+    <div class="flex-grow flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+        <header class="w-full max-w-4xl flex justify-between items-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-indigo-primary dark:text-indigo-light">
+                <i class="fas fa-exchange-alt mr-3"></i>Pack Converter
+            </h1>
+            <button id="themeToggle" class="p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow-md hover:scale-105 transition-transform duration-200">
+                <i class="fas fa-moon hidden dark:inline-block"></i>
+                <i class="fas fa-sun inline-block dark:hidden"></i>
+            </button>
+        </header>
+
+        <main class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <section class="card p-6 flex flex-col items-center text-center">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">Java to Bedrock</h2>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">Convert your Java Edition resource packs to Bedrock Edition.</p>
+
+                <div class="w-full mb-6">
+                    <label for="javaUpload" class="cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-indigo-light dark:border-indigo-primary rounded-xl p-6 w-full hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-upload text-4xl text-indigo-primary dark:text-indigo-light mb-3"></i>
+                        <span class="text-lg font-medium text-gray-700 dark:text-gray-200">Upload Java Pack (.zip)</span>
+                        <span id="javaFileName" class="text-sm text-gray-500 dark:text-gray-400 mt-1">No file chosen</span>
+                        <input type="file" id="javaUpload" accept=".zip" class="hidden">
+                    </label>
+                </div>
+
+                <button id="convertJavaToBedrock" class="w-full bg-indigo-primary hover:bg-indigo-dark text-white font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-cogs mr-2"></i>Convert to Bedrock
+                </button>
+
+                <div id="javaProgressBarContainer" class="progress-bar-container mt-6 hidden">
+                    <div id="javaProgressBar" class="progress-bar"></div>
+                </div>
+                <p id="javaStatusMessage" class="mt-4 text-sm text-gray-700 dark:text-gray-300"></p>
+                <a id="javaDownloadLink" href="#" class="mt-4 text-indigo-primary dark:text-indigo-light font-semibold hover:underline hidden" download="converted_bedrock_pack.mcpack">
+                    <i class="fas fa-download mr-2"></i>Download Bedrock Pack
+                </a>
+            </section>
+
+            <section class="card p-6 flex flex-col items-center text-center">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">Bedrock to Java</h2>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">Convert your Bedrock Edition resource packs to Java Edition.</p>
+
+                <div class="w-full mb-6">
+                    <label for="bedrockUpload" class="cursor-pointer flex flex-col items-center justify-center border-2 border-dashed border-indigo-light dark:border-indigo-primary rounded-xl p-6 w-full hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                        <i class="fas fa-upload text-4xl text-indigo-primary dark:text-indigo-light mb-3"></i>
+                        <span class="text-lg font-medium text-gray-700 dark:text-gray-200">Upload Bedrock Pack (.mcpack/.zip)</span>
+                        <span id="bedrockFileName" class="text-sm text-gray-500 dark:text-gray-400 mt-1">No file chosen</span>
+                        <input type="file" id="bedrockUpload" accept=".mcpack,.zip" class="hidden">
+                    </label>
+                </div>
+
+                <button id="convertBedrockToJava" class="w-full bg-indigo-primary hover:bg-indigo-dark text-white font-bold py-3 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fas fa-cogs mr-2"></i>Convert to Java
+                </button>
+
+                <div id="bedrockProgressBarContainer" class="progress-bar-container mt-6 hidden">
+                    <div id="bedrockProgressBar" class="progress-bar"></div>
+                </div>
+                <p id="bedrockStatusMessage" class="mt-4 text-sm text-gray-700 dark:text-gray-300"></p>
+                <a id="bedrockDownloadLink" href="#" class="mt-4 text-indigo-primary dark:text-indigo-light font-semibold hover:underline hidden" download="converted_java_pack.zip">
+                    <i class="fas fa-download mr-2"></i>Download Java Pack
+                </a>
+            </section>
+        </main>
+
+        <footer class="mt-12 text-center text-gray-500 dark:text-gray-400 text-sm">
+            <p>&copy; 2025 Indigo Tools. All rights reserved.</p>
+            <p>Disclaimer: This tool provides a client-side simulation of conversion. Full fidelity conversion, especially for PBR and custom models, is highly complex and typically requires a server-side backend.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
